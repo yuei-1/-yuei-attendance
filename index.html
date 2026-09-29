@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8"><meta name="theme-color" content="#111827"><link rel="manifest" href="./manifest.webmanifest"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="apple-mobile-web-app-title" content="勇栄出面"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>勇栄 出面管理・個人版</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#f2f5f8;color:#17263a;font-family:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif}.app{max-width:430px;margin:auto;min-height:100vh;background:#fff}.head{background:#103b68;color:#fff;padding:17px 18px}.brand{font-weight:800;font-size:18px}.small{font-size:11px;opacity:.8;margin-top:3px}main{padding:16px 16px 40px}.date{color:#65758a;font-size:13px}.site{margin-top:9px;padding:15px;border-radius:15px;background:#edf6ff}.site h2{margin:0 0 7px;font-size:19px}.site p{margin:4px 0;font-size:13px;color:#5c6c80}.status{margin:14px 0;padding:12px;border-radius:12px;text-align:center;background:#f4f6f8;font-weight:700}.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.btn{border:0;border-radius:14px;padding:17px 8px;font-size:17px;font-weight:800}.in{background:#16b66b;color:white}.out{background:#e95151;color:white}.off{grid-column:1/-1;background:#edf0f4;color:#39485b}h3{font-size:15px;margin:20px 0 9px}.cards{display:grid;grid-template-columns:1fr 1fr;gap:9px}.card{border:1px solid #e1e7ee;border-radius:13px;padding:12px}.label{font-size:11px;color:#718096}.value{font-size:20px;font-weight:800;margin-top:4px}.green{color:#079b58}.red{color:#d63e3e}.blue{color:#1769aa}.settings{margin-top:10px;padding:14px;border-radius:14px;background:#f7f9fb}.field{margin:10px 0}.field label{display:block;font-size:12px;color:#5d6d80;margin-bottom:5px}.input,select{width:100%;border:1px solid #d8e0e8;border-radius:9px;padding:11px;font-size:14px;background:#fff;color:#17263a}.row{display:grid;grid-template-columns:1fr 1fr;gap:8px}.save{width:100%;border:0;border-radius:10px;background:#1769aa;color:#fff;padding:12px;font-weight:700;font-size:15px;margin-top:5px}.hint{font-size:11px;color:#718096;line-height:1.55;margin-top:9px}.notice{padding:11px;background:#fff8e6;border:1px solid #f0dfab;border-radius:10px;font-size:12px;line-height:1.5;color:#725619;margin-top:10px}.danger{margin-top:9px;width:100%;border:0;border-radius:9px;padding:10px;background:#fff0f0;color:#c93636}table{width:100%;border-collapse:collapse;font-size:11px}th,td{padding:8px 3px;border-bottom:1px solid #edf0f3;text-align:left}.nav{position:sticky;bottom:0;background:#fff;border-top:1px solid #e2e7ec;padding:10px;display:flex;justify-content:space-around;font-size:11px;color:#66768a}.modal{display:none;position:fixed;inset:0;background:#0007;align-items:flex-end;justify-content:center}.sheet{width:min(430px,100%);background:#fff;border-radius:22px 22px 0 0;padding:20px}.sheet h2{margin:0 0 5px}.sheet p{margin:0 0 15px;color:#68778a;font-size:13px}.choices{display:grid;grid-template-columns:1fr 1fr;gap:9px}.choice{padding:14px;border:1px solid #dbe3eb;border-radius:12px;background:#f7f9fb;font-weight:700;font-size:15px}.cancel{width:100%;border:0;border-radius:11px;background:#edf0f4;padding:13px;margin-top:10px;font-weight:700}.toast{display:none;position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#17263a;color:#fff;padding:11px 16px;border-radius:999px;font-size:12px;z-index:5;white-space:nowrap}
+</style></head>
+<body><div class="app">
+<header class="head"><div class="brand">勇 株式会社勇栄</div><div class="small">出面管理・個人版　｜　GPSなし</div></header>
+<main>
+<div class="date" id="date"></div>
+<div class="site"><h2 id="siteName">本厚木複合施設</h2><p><span id="homeStation">自宅最寄駅 未設定</span> → <b id="siteStation">現場最寄駅 未設定</b></p><p>予定時間：<b id="start">7:30</b> ～ <b id="end">17:00</b></p><p>片道運賃：<b id="fare">未設定</b>　／　出勤時の交通費：<b id="todayFare">0円</b></p></div>
+<div class="status" id="status">本日は未登録です</div>
+<div class="grid"><button class="btn in" onclick="openModal('in')">🟢 入場</button><button class="btn out" onclick="openModal('out')">🔴 退場</button><button class="btn off" onclick="dayOff()">⚪ 休み</button></div>
+<h3>今日の記録</h3><div class="cards">
+<div class="card"><div class="label">入場</div><div class="value blue" id="inTime">--:--</div></div><div class="card"><div class="label">退場</div><div class="value red" id="outTime">--:--</div></div>
+<div class="card"><div class="label">早出</div><div class="value green" id="early">0時間</div></div><div class="card"><div class="label">残業</div><div class="value red" id="over">0時間</div></div>
+</div>
+<h3>今月の集計</h3><div class="cards">
+<div class="card"><div class="label">出勤日数</div><div class="value" id="days">0日</div></div><div class="card"><div class="label">交通費合計</div><div class="value blue" id="fareTotal">0円</div></div>
+<div class="card"><div class="label">早出合計</div><div class="value green" id="earlyTotal">0時間</div></div><div class="card"><div class="label">残業合計</div><div class="value red" id="overTotal">0時間</div></div>
+</div>
+<h3>現場・交通費の設定</h3><div class="settings">
+<div class="field"><label>現場名</label><input class="input" id="siteInput" placeholder="例：本厚木複合施設"></div>
+<div class="row"><div class="field"><label>自宅の最寄駅</label><input class="input" id="homeInput" placeholder="例：大井競馬場前"></div><div class="field"><label>現場の最寄駅</label><input class="input" id="stationInput" placeholder="例：本厚木"></div></div>
+<div class="row"><div class="field"><label>片道運賃（円）</label><input class="input" id="fareInput" type="number" min="0" step="1" placeholder="例：600"></div><div class="field"><label>交通費の計算</label><select class="input" id="tripInput"><option value="round">往復で計算</option><option value="one">片道で計算</option></select></div></div>
+<div class="row"><div class="field"><label>予定開始</label><input class="input" id="startInput" type="time"></div><div class="field"><label>予定終了</label><input class="input" id="endInput" type="time"></div></div>
+<div class="field"><label>入場通知の時刻（設定メモ）</label><input class="input" id="noticeInput" type="time"></div>
+<button class="save" onclick="saveSettings()">設定を保存</button>
+<div class="notice"><b>運賃の自動計算について</b><br>この試作版は駅名から最新の電車運賃を直接検索する機能はまだありません。片道運賃を一度入力すると、出勤登録ごとに片道／往復の交通費を自動計算し、月間合計に反映します。</div>
+<div class="hint">データはこの端末のブラウザ内に保存されます。ブラウザのデータを消去すると記録も消える場合があります。</div>
+<button class="danger" onclick="resetAll()">全データをリセット</button>
+</div>
+<h3>今月の出面</h3><table><thead><tr><th>日付</th><th>現場</th><th>入場</th><th>退場</th><th>交通費</th></tr></thead><tbody id="history"></tbody></table>
+</main><nav class="nav"><span>⌂ ホーム</span><span>▣ 出面</span><span>♙ 現場</span><span>☰ 設定</span></nav></div>
+<div class="modal" id="modal"><div class="sheet"><h2 id="title"></h2><p id="desc"></p><div class="choices" id="choices"></div><button class="cancel" onclick="closeModal()">キャンセル</button></div></div><div class="toast" id="toast"></div>
+<script>
+const KEY='yuei_personal_attendance_v3';
+let data=JSON.parse(localStorage.getItem(KEY)||'{"settings":{"site":"本厚木複合施設","homeStation":"","station":"","fare":"","trip":"round","start":"07:30","end":"17:00","notice":"07:20"},"records":{}}'),type='';
+const pad=n=>String(n).padStart(2,'0');function today(){let d=new Date();return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())}function now(){let d=new Date();return pad(d.getHours())+':'+pad(d.getMinutes())}function save(){localStorage.setItem(KEY,JSON.stringify(data))}
+function farePerDay(){let f=Math.max(0,Number(data.settings.fare)||0);return f*(data.settings.trip==='round'?2:1)}
+function money(n){return Math.round(n).toLocaleString('ja-JP')+'円'}function hours(v){if(!v)return 0;if(v==='30分')return .5;let m=String(v).match(/(\d+)/);return m?Number(m[1]):0}
+function total(arr,k){let n=arr.reduce((s,r)=>s+hours(r[k]),0);return Number.isInteger(n)?n:n.toFixed(1)}
+function render(){
+ let s=data.settings,r=data.records[today()];document.getElementById('siteName').textContent=s.site||'現場未設定';document.getElementById('homeStation').textContent=s.homeStation?'自宅：'+s.homeStation:'自宅最寄駅 未設定';document.getElementById('siteStation').textContent=s.station?'現場：'+s.station:'現場最寄駅 未設定';document.getElementById('start').textContent=s.start;document.getElementById('end').textContent=s.end;document.getElementById('fare').textContent=s.fare!==''?money(s.fare)+'（片道）':'未設定';document.getElementById('todayFare').textContent=money(r&&r.transport!=null?r.transport:0);
+ ['siteInput','homeInput','stationInput','fareInput','tripInput','startInput','endInput','noticeInput'].forEach((id,i)=>{let vals=[s.site,s.homeStation,s.station,s.fare,s.trip,s.start,s.end,s.notice];document.getElementById(id).value=vals[i]??''});
+ if(!r){setToday('本日は未登録です','--:--','--:--','0時間','0時間')}else if(r.off){setToday('本日は「休み」で登録されています','休み','休み','0時間','0時間')}else{setToday(`入場 ${r.in||'--:--'}　｜　退場 ${r.out||'--:--'}`,r.in||'--:--',r.out||'--:--',r.early||'0時間',r.over||'0時間')}
+ let month=today().slice(0,7),recs=Object.values(data.records).filter(x=>x.date&&x.date.startsWith(month));document.getElementById('days').textContent=recs.filter(x=>!x.off&&x.in).length+'日';document.getElementById('fareTotal').textContent=money(recs.reduce((a,x)=>a+(Number(x.transport)||0),0));document.getElementById('earlyTotal').textContent=total(recs,'early')+'時間';document.getElementById('overTotal').textContent=total(recs,'over')+'時間';
+ document.getElementById('history').innerHTML=recs.sort((a,b)=>b.date.localeCompare(a.date)).map(x=>`<tr><td>${x.date.slice(5).replace('-','/')}</td><td>${esc(x.site||'')}</td><td>${x.off?'休み':x.in||'--:--'}</td><td>${x.off?'—':x.out||'--:--'}</td><td>${x.off?'—':money(x.transport||0)}</td></tr>`).join('')||'<tr><td colspan="5">まだ記録がありません</td></tr>';
+}
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function setToday(st,i,o,e,v){document.getElementById('status').textContent=st;document.getElementById('inTime').textContent=i;document.getElementById('outTime').textContent=o;document.getElementById('early').textContent=e;document.getElementById('over').textContent=v}
+function openModal(t){type=t;document.getElementById('title').textContent=t==='in'?'入場登録':'退場登録';document.getElementById('desc').textContent=t==='in'?'入場時刻を記録し、早出時間を選択してください。':'退場時刻を記録し、残業時間を選択してください。';let a=t==='in'?['なし','30分','1時間','2時間','3時間','4時間']:['なし','1時間','2時間','3時間','4時間','5時間'];document.getElementById('choices').innerHTML=a.map(x=>`<button class="choice" onclick="register('${x}')">${x}</button>`).join('');document.getElementById('modal').style.display='flex'}
+function closeModal(){document.getElementById('modal').style.display='none'}
+function register(extra){let r=data.records[today()]||{date:today(),site:data.settings.site};if(type==='in'){r.in=now();r.early=extra==='なし'?'0時間':extra;r.site=data.settings.site;r.transport=farePerDay()}else{r.out=now();r.over=extra==='なし'?'0時間':extra;if(r.transport==null)r.transport=farePerDay()}data.records[today()]=r;save();render();closeModal();toast(type==='in'?'入場と交通費を登録しました':'退場を登録しました')}
+function dayOff(){data.records[today()]={date:today(),site:data.settings.site,off:true,transport:0};save();render();toast('休みを登録しました')}
+function saveSettings(){let s=data.settings;s.site=document.getElementById('siteInput').value.trim()||'現場未設定';s.homeStation=document.getElementById('homeInput').value.trim();s.station=document.getElementById('stationInput').value.trim();s.fare=document.getElementById('fareInput').value;s.trip=document.getElementById('tripInput').value;s.start=document.getElementById('startInput').value||'07:30';s.end=document.getElementById('endInput').value||'17:00';s.notice=document.getElementById('noticeInput').value||'07:20';save();render();toast('設定を保存しました')}
+function resetAll(){if(confirm('すべての出面記録と設定を削除しますか？')){localStorage.removeItem(KEY);location.reload()}}
+function toast(t){let e=document.getElementById('toast');e.textContent=t;e.style.display='block';setTimeout(()=>e.style.display='none',1800)}
+document.getElementById('date').textContent=new Date().toLocaleDateString('ja-JP',{year:'numeric',month:'long',day:'numeric',weekday:'short'});render();
+</script><script>
+if ("serviceWorker" in navigator && location.protocol !== "file:") {
+  navigator.serviceWorker.register("./service-worker.js").catch(()=>{});
+}
+</script>
+</body></html>

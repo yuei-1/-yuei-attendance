@@ -1,0 +1,10 @@
+{
+  "name": "株式会社勇栄 出面管理",
+  "short_name": "勇栄出面",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#111827",
+  "lang": "ja",
+  "description": "入場・退場・休み、早出・残業、現場・交通費を管理する個人用出面管理アプリ"
+}
